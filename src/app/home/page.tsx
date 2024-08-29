@@ -1,8 +1,9 @@
-export default function  HomePage(){
+import Spinner from "../../components/Spinner/spinner";
 
-    return (<div className="text-red-600">
+export default function HomePage() {
 
-        homepae
+    return (<div className="">
 
+        
     </div>)
 }
