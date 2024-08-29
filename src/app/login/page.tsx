@@ -6,36 +6,47 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "fire
 import { auth, db } from "../firebase/config";
 import { doc, setDoc } from "firebase/firestore";
 import Link from "next/link";
-import Cookies from "js-cookie"; // Import js-cookie
+import Cookies from "js-cookie";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("user");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
     const [isRegister, setIsRegister] = useState(false);
     const router = useRouter();
-
-    const handleAuth = async (event) => {
+    const [isAdmin, setIsAdmin] = useState(false);
+  
+    const handleAuth = async (event: React.FormEvent) => {
         event.preventDefault();
         try {
             if (isRegister) {
+                if (password !== confirmPassword) {
+                    setError("Passwords do not match");
+                    return;
+                }
+
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-                await setDoc(doc(db, "users", user.uid), {
-                    email,
-                    role
-                });
-               
-                Cookies.set('token', await user.getIdToken(), { expires: 7 }); 
+                await setDoc(doc(db, "users", user.uid), { email });
+
+                Cookies.set('token', await user.getIdToken(), { expires: 7 });
+                toast.success("Registration successful!");
                 router.push("/");
             } else {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-                Cookies.set('token', await user.getIdToken(), { expires: 7 }); 
+
+                Cookies.set('isAdmin', user.email === "admin@gmail.com" ? 'true' : 'false', { expires: 7 });
+                Cookies.set('token', await user.getIdToken(), { expires: 7 });
+                toast.success("Login successful!");
                 router.push("/");
             }
         } catch (err) {
+            toast.error("An error occurred: " + err.message);
             setError(err.message);
         }
     };
@@ -75,18 +86,14 @@ export default function LoginPage() {
                             required
                         />
                         {isRegister && (
-                            <div>
-                                <label htmlFor="role" className="block text-sm font-medium">Role</label>
-                                <select
-                                    id="role"
-                                    className="border p-3 rounded-md text-sm"
-                                    value={role}
-                                    onChange={(e) => setRole(e.target.value)}
-                                >
-                                    <option value="user">User</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </div>
+                            <input
+                                type="password"
+                                className="outline-none border p-3 rounded-md text-sm"
+                                placeholder="Confirm Password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
                         )}
                         {error && <p className="text-red-500 text-sm">{error}</p>}
                         <button className="bg-black font-bold text-white py-3 rounded-md w-[324px]" type="submit">
@@ -98,9 +105,13 @@ export default function LoginPage() {
                             Forgot password?
                         </Link>
                         <p className="text-sm">
-                            {isRegister ? "Already have an account?" : "Don't have an account?"} 
+                            {isRegister ? "Already have an account?" : "Don't have an account?"}
                             <button
-                                onClick={() => setIsRegister(!isRegister)}
+                                onClick={() => {
+                                    setIsRegister(!isRegister);
+                                    setError("");
+
+                                }}
                                 className="text-sm hover:underline"
                             >
                                 {isRegister ? "Login here" : "Register here"}
@@ -112,6 +123,7 @@ export default function LoginPage() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }
