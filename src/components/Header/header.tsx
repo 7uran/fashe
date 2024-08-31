@@ -99,7 +99,10 @@ const Header = () => {
                 </div>
                 <div className='py-6 px-12 flex items-center justify-between bg-white shadow-md'>
                     <div>
-                        <img src="https://preview.colorlib.com/theme/fashe/images/icons/logo.png" alt="Logo" />
+                        <Link href="/home">
+                            <img src="https://preview.colorlib.com/theme/fashe/images/icons/logo.png" alt="Logo" />
+                        </Link>
+
                     </div>
                     <div>
                         <ul className="md:flex hidden items-center gap-6 text-base">

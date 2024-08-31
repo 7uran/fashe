@@ -5,9 +5,9 @@ import { BlogPageCardProps } from '../../types/types';
 
 const BlogPageCard: React.FC<BlogPageCardProps> = ({ img, title, date, content, slug }) => {
     return (
-        <div className='w-[822px] flex flex-col gap-8'>
+        <div className='md:w-[822px] md:px-0 px-2  flex flex-col gap-8'>
             <div className='group overflow-hidden relative flex items-end cursor-pointer'>
-                <img className='group-hover:scale-110 transition duration-500 w-[822px]' src={img} alt={title} />
+                <img className='group-hover:scale-110 transition duration-500 w-full md:w-[822px]' src={img} alt={title} />
                 <div className='absolute z-[1] bottom-8 uppercase bg-black text-white py-1 px-2'>
                     {date}
                 </div>
