@@ -87,3 +87,28 @@ export const BlogPageCardItems: BlogPost[] = [
     },
 
 ];
+
+export const FeaturedCardItems = [
+    {
+        img: "https://preview.colorlib.com/theme/fashe/images/item-16.jpg", title: "White Shirt With Pleat Detail Back", price: "19"
+
+    },
+    {
+        img: "https://preview.colorlib.com/theme/fashe/images/item-17.jpg", title: "Converse All Star Hi Black Canvas", price: "39"
+
+    }
+    ,
+    {
+        img: "https://preview.colorlib.com/theme/fashe/images/item-08.jpg", title: "Nixon Porter Leather Watch In Tan", price: "17"
+
+    }
+    ,
+    {
+        img: "https://preview.colorlib.com/theme/fashe/images/item-03.jpg", title: "Denim jacket blue", price: "39"
+
+    },
+    {
+        img: "https://preview.colorlib.com/theme/fashe/images/item-05.jpg", title: "Nixon Porter Leather Watch In Tan", price: "17"
+
+    },
+]
