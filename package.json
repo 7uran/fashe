@@ -11,6 +11,8 @@
   "dependencies": {
     "@sanity/client": "^6.21.3",
     "@sanity/image-url": "^1.0.2",
+    "@stripe/react-stripe-js": "^2.8.0",
+    "@stripe/stripe-js": "^4.4.0",
     "axios": "^1.7.5",
     "firebase": "^10.13.0",
     "formik": "^2.4.6",
