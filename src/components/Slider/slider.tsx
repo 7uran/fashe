@@ -19,7 +19,7 @@ const Slider = () => {
   };
 
   return (
-    <div className="relative w-full h-[540px] overflow-hidden group">
+    <div className="relative w-full h-[540px] overflow-hidden group ">
 
       <div
         className="absolute inset-0 transition-opacity duration-700 ease-in-out"

@@ -1,39 +1,95 @@
-"use client"
-import React, { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import { FaFacebookF, FaInstagram, FaPinterestP, FaSnapchatGhost, FaYoutube } from "react-icons/fa";
-import Link from "next/link";
-import { auth, db } from "../../app/firebase/config";
-import { doc, getDoc } from "firebase/firestore";
+import React, { useState, useEffect, useCallback } from "react";
 import Cookies from "js-cookie";
-import { items } from "../../mockdb";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import SocialMedias from "../SocialMedias/socialMedias";
+import BasketDropdown from "../BasketDropdown/basketDropdown";
+import { navItems } from "../../mockdb";
 
 const Header = () => {
     const pathname = usePathname();
     const [dropdown, setDropdown] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isBasketOpen, setIsBasketOpen] = useState(false);
+    const [basketItems, setBasketItems] = useState([]);
 
     const handleDropdownOpen = () => {
         setDropdown(!dropdown);
     };
+
+    const toggleBasketDropdown = () => {
+        if (!isBasketOpen) {
+            const savedItems = JSON.parse(localStorage.getItem('cart') || '[]');
+            setBasketItems(savedItems);
+        }
+        setIsBasketOpen(!isBasketOpen);
+    };
+
+    const closeBasketDropdown = () => {
+        setIsBasketOpen(false);
+    };
+
+    const handleClickOutside = useCallback((event) => {
+        const basketButton = document.querySelector('.basket-button');
+        const basketDropdown = document.querySelector('.basket-dropdown');
+        if (
+            basketButton && !basketButton.contains(event.target) &&
+            basketDropdown && !basketDropdown.contains(event.target)
+        ) {
+            closeBasketDropdown();
+        }
+    }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 0);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+    useEffect(() => {
+        const updateBasketItems = () => {
+            if (isBasketOpen) {
+                const savedItems = JSON.parse(localStorage.getItem('cart') || '[]');
+                setBasketItems(savedItems);
+            }
+        };
+
+        window.addEventListener('storage', updateBasketItems);
+
+        return () => {
+            window.removeEventListener('storage', updateBasketItems);
+        };
+    }, [isBasketOpen]);
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [handleClickOutside]);
+
+    const userEmail = Cookies.get('userEmail');
+
+
     const isAdmin = Cookies.get('isAdmin') === 'true';
+
     const deleteToken = () => {
         document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
         document.cookie = "userEmail=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
         window.location.href = "/login";
     };
 
-
     return (
         <header className="shadow-md">
-            <div>
-                <div className="py-3 px-12 bg-[#F5F5F5] text-gray-500 flex items-center justify-between">
-                    <div className="flex items-center gap-4 text-lg">
-                        <FaFacebookF className="hover:text-main transition duration-500 cursor-pointer" />
-                        <FaInstagram className="hover:text-main transition duration-500 cursor-pointer" />
-                        <FaPinterestP className="hover:text-main transition duration-500 cursor-pointer" />
-                        <FaSnapchatGhost className="hover:text-main transition duration-500 cursor-pointer" />
-                        <FaYoutube className="hover:text-main transition duration-500 cursor-pointer" />
-                    </div>
+            <div className={` ${isScrolled ? "translate-y-[-43px]" : ""} transition-transform duration-150 fixed z-[50] w-full top-0`}>
+                <div className="py-3 px-12 bg-[#F5F5F5] text-gray-500 hidden md:flex items-center justify-between">
+                    <SocialMedias />
                     <div>
                         <p className="text-xs">Free shipping for standard order over $100</p>
                     </div>
@@ -41,19 +97,19 @@ const Header = () => {
                         <p className="text-xs">fashe@example.com</p>
                     </div>
                 </div>
-                <div className="py-6 px-12 flex items-center justify-between">
+                <div className='py-6 px-12 flex items-center justify-between bg-white shadow-md'>
                     <div>
                         <img src="https://preview.colorlib.com/theme/fashe/images/icons/logo.png" alt="Logo" />
                     </div>
                     <div>
-                        <ul className="flex items-center gap-6 text-base">
-                            {items.map((item) => (
-                                (item.path === "Dashboard" && !isAdmin ? null : <li key={item.path} className={`group cursor-pointer ${pathname === item.path ? "text-main" : ""}`}>
+                        <ul className="md:flex hidden items-center gap-6 text-base">
+                            {navItems.map((item) => (
+                                <li key={item.path} className={`group cursor-pointer ${pathname === item.path ? "text-main" : "text-black"}`}>
                                     <Link href={item.path}>
                                         <p>{item.name}</p>
                                         <div className={`border-b-[1px] border-black w-full h-1 opacity-0 group-hover:opacity-100 transition duration-500`}></div>
                                     </Link>
-                                </li>)
+                                </li>
                             ))}
                         </ul>
                     </div>
@@ -62,25 +118,31 @@ const Header = () => {
                             <div className="relative inline-block text-left">
                                 <div>
                                     <button onClick={handleDropdownOpen}>
-                                        <img src="https://preview.colorlib.com/theme/fashe/images/icons/icon-header-01.png.webp" />
+                                        <img src="https://preview.colorlib.com/theme/fashe/images/icons/icon-header-01.png" alt="Profile" />
                                     </button>
                                 </div>
-                                {dropdown && (
-                                    <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
-                                        <div className="py-1" role="none">
-                                            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1} id="menu-item-0">Account settings</a>
-                                            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1} id="menu-item-1">Support</a>
-                                            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1} id="menu-item-2">License</a>
-                                            <form method="POST" action="#" role="none">
-                                                <button onClick={deleteToken} type="submit" className="block w-full px-4 py-2 text-left text-sm text-gray-700" role="menuitem" tabIndex={-1} id="menu-item-3">Sign out</button>
-                                            </form>
-                                        </div>
+                                <div className={`absolute right-0 z-10 mt-2 w-[200px] origin-top-right bg-white shadow-lg rounded-md ${dropdown ? 'block' : 'hidden'}`}>
+                                    <div className='p-6'>
+                                        {userEmail ? (
+                                            <div className='text-gray-800 text-xs mb-2 cursor-pointer'>{userEmail}</div>
+                                        ) : null}
+                                        <Link href="/profile">
+                                            <div className='text-gray-800 text-xs mb-2 cursor-pointer'>Profile</div>
+                                        </Link>
+                                        <div className='text-gray-800 text-xs cursor-pointer' onClick={deleteToken}>Log Out</div>
                                     </div>
-                                )}
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <img src="https://preview.colorlib.com/theme/fashe/images/icons/icon-header-02.png.webp" alt="Icon 2" />
+                        <div className="relative basket-button">
+                            <button onClick={toggleBasketDropdown}>
+                                <img src="https://preview.colorlib.com/theme/fashe/images/icons/icon-header-02.png" alt="Basket" />
+                            </button>
+                            {isBasketOpen && (
+                                <div className="absolute right-0 z-10 mt-2 w-[338px] origin-top-right bg-white shadow-lg rounded-md basket-dropdown">
+                                    <BasketDropdown isOpen={isBasketOpen} onClose={closeBasketDropdown} items={basketItems} setItems={setBasketItems} />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

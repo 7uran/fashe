@@ -10,18 +10,18 @@ import Cookies from "js-cookie";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
     const [isRegister, setIsRegister] = useState(false);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
-    const [isAdmin, setIsAdmin] = useState(false);
-  
+
     const handleAuth = async (event: React.FormEvent) => {
         event.preventDefault();
+        setLoading(true);
         try {
             if (isRegister) {
                 if (password !== confirmPassword) {
@@ -33,6 +33,7 @@ export default function LoginPage() {
                 const user = userCredential.user;
                 await setDoc(doc(db, "users", user.uid), { email });
 
+                Cookies.set('userEmail', email, { expires: 7 });
                 Cookies.set('token', await user.getIdToken(), { expires: 7 });
                 toast.success("Registration successful!");
                 router.push("/");
@@ -40,7 +41,7 @@ export default function LoginPage() {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                Cookies.set('isAdmin', user.email === "admin@gmail.com" ? 'true' : 'false', { expires: 7 });
+                Cookies.set('userEmail', email, { expires: 7 });
                 Cookies.set('token', await user.getIdToken(), { expires: 7 });
                 toast.success("Login successful!");
                 router.push("/");
@@ -48,6 +49,8 @@ export default function LoginPage() {
         } catch (err) {
             toast.error("An error occurred: " + err.message);
             setError(err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -96,7 +99,11 @@ export default function LoginPage() {
                             />
                         )}
                         {error && <p className="text-red-500 text-sm">{error}</p>}
-                        <button className="bg-black font-bold text-white py-3 rounded-md w-[324px]" type="submit">
+                        <button
+                            className={`bg-black font-bold text-white py-3 rounded-md w-[324px] ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                            type="submit"
+                            disabled={loading}
+                        >
                             {isRegister ? "Register" : "Login"}
                         </button>
                     </form>
@@ -110,7 +117,6 @@ export default function LoginPage() {
                                 onClick={() => {
                                     setIsRegister(!isRegister);
                                     setError("");
-
                                 }}
                                 className="text-sm hover:underline"
                             >
@@ -127,3 +133,4 @@ export default function LoginPage() {
         </div>
     );
 }
+1

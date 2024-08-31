@@ -7,7 +7,9 @@ import Footer from "../components/Footer/footer";
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Spinner from "../components/Spinner/spinner";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ScrollButton from '../components/ScrollButton/scrollButton';
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -36,6 +38,8 @@ export default function RootLayout({
             {!hideHeaderFooter && <Header />}
             <Provider>{children}</Provider>
             {!hideHeaderFooter && <Footer />}
+            <ToastContainer />
+            <ScrollButton />
           </>
         )}
       </body>
