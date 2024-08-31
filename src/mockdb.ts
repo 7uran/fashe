@@ -54,21 +54,21 @@ export const BlogPageCardItems: BlogPost[] = [
         title: "Black Friday Guide: Best Sales & Discount Codes",
         date: "28 Dec, 2018",
         content: "Duis ut velit gravida nibh bibendum commodo. Suspendisse pellentesque mattis augue id euismod. Interdum et malesuada fames.",
-        slug: "black-friday-guide-best-sales-discount-codes"
+        slug: "black-friday"
     },
     {
         img: "https://preview.colorlib.com/theme/fashe/images/blog-05.jpg.webp",
         title: "The White Sneakers Nearly Every Fashion Girls Own",
         date: "15 Jan, 2019",
         content: "Nullam scelerisque, lacus sed consequat laoreet, dui enim iaculis leo, eu viverra ex nulla in tellus. Nullam nec ornare tellus.",
-        slug: "the-white-sneakers-nearly-every-fashion-girls-own"
+        slug: "the-white-sneakers"
     },
     {
         img: "https://preview.colorlib.com/theme/fashe/images/blog-08.jpg.webp",
         title: "Black Friday Guide: Best Sales & Discount Codes",
         date: "28 Dec, 2018",
         content: "Duis ut velit gravida nibh bibendum commodo. Suspendisse pellentesque mattis augue id euismod. Interdum et malesuada fames.",
-        slug: "black-friday-guide-best-sales-discount-codes"
+        slug: "black-friday-guide"
     },
     {
         img: "https://preview.colorlib.com/theme/fashe/images/blog-02.jpg.webp",
@@ -83,7 +83,7 @@ export const BlogPageCardItems: BlogPost[] = [
         title: "The White Sneakers Nearly Every Fashion Girls Own",
         date: "15 Jan, 2019",
         content: "Nullam scelerisque, lacus sed consequat laoreet, dui enim iaculis leo, eu viverra ex nulla in tellus. Nullam nec ornare tellus.",
-        slug: "the-white-sneakers-nearly-every-fashion-girls-own"
+        slug: "the-white-sneakers-every-fashion-girls-own"
     },
 
 ];

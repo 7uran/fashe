@@ -21,7 +21,7 @@ const BlogPage = () => {
                 <h1 className='uppercase absolute text-5xl z-[1] text-white font-bold'>blog</h1>
             </div>
             <section>
-                <div className="py-10 mt-10 max-w-[1176px] mx-auto flex gap-20 ">
+                <div className="py-10 mt-10 max-w-[1176px] mx-auto flex gap-20 flex-wrap ">
                     <div className='flex flex-col gap-8 w-fit'>
                         {blogPosts.map((post, index) => (
                             <BlogPageCard
@@ -34,7 +34,7 @@ const BlogPage = () => {
                             />
                         ))}
                     </div>
-                    <div className='w-full hidden md:flex flex-col gap-12'>
+                    <div className=' flex w-[274px]  flex-col gap-12'>
                         <div className='flex items-center relative justify-end'>
                             <input className='outline-none text-sm border rounded-full p-4 w-full' placeholder='Search' type='text' />
                             <HiMiniMagnifyingGlass className="absolute right-3 hover:text-main transition cursor-pointer" />
