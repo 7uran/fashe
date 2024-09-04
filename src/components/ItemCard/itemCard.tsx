@@ -2,19 +2,29 @@ import React from 'react';
 import { IoHeartOutline } from "react-icons/io5";
 import { ItemCardProps } from '../../types/types';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const addToCart = (item) => {
+  
+  
   const cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
   if (existingItemIndex > -1) {
     cart[existingItemIndex].quantity += 1;
   } else {
     cart.push({ ...item, quantity: 1 });
+
   }
   localStorage.setItem('cart', JSON.stringify(cart));
-  toast.success("Added to cart")
-  console.log("Added");
+
+ 
+  Swal.fire({
+    title: item.title,
+    text: "is added to cart !",
+    icon: "success"
+  });
   
+
 };
 
 const ItemCard: React.FC<ItemCardProps> = ({ img, title, price, label, id }) => {

@@ -1,6 +1,7 @@
 import React from 'react'
+import { BannerProps } from '../../types/types'
 
-const Banner = ({img,title}) => {
+const Banner: React.FC<BannerProps> = ({img,title}) => {
     return (
         <div className='relative flex justify-center items-center w-full h-[264px]'>
             <img className='relative h-[264px] object-cover w-full' src={img} alt='Blog Header' />
