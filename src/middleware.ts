@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-const protectedRoutes = ['/home', '/dashboard']; 
-
-
-const publicRoutes = ['/', '/signup', '/login']; 
+const protectedRoutes = ['/home', '/blog', '/about', '/features', '/contact'];
+const publicRoutes = ['/', '/signup', '/login'];
 
 export default async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname;
@@ -18,6 +16,10 @@ export default async function middleware(req: NextRequest) {
     }
 
     if (isPublicRoute && cookie) {
+        return NextResponse.redirect(new URL('/home', req.nextUrl));
+    }
+
+    if (path === '/' && process.env.NODE_ENV === 'development') {
         return NextResponse.redirect(new URL('/home', req.nextUrl));
     }
 
