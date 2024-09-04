@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { useState } from "react";
 import { IoTrashOutline } from "react-icons/io5";
 
@@ -45,9 +46,9 @@ const BasketDropdown = ({ isOpen, onClose, items, setItems }) => {
                             ))}
                         </div>
                         <div className='flex justify-between mt-4'>
-                            <button className='w-[142px] text-sm uppercase h-fit text-nowrap rounded-full text-white bottom-4 bg-black px-6 py-3 group-hover shadow-sm hover:bg-main hover:text-white transition'>
+                            <Link href="/features" className='w-[142px] text-sm uppercase flex justify-center h-fit text-nowrap rounded-full text-white bottom-4 bg-black px-6 py-3 group-hover shadow-sm hover:bg-main hover:text-white transition'>
                                 View Cart
-                            </button>
+                            </Link>
                             <button className='w-[142px] text-sm uppercase h-fit rounded-full text-white bottom-4 bg-black px-6 py-3 group-hover shadow-sm hover:bg-main hover:text-white transition'>
                                 Checkout
                             </button>

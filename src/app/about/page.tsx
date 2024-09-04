@@ -1,12 +1,10 @@
 import React from 'react'
+import Banner from '../../components/Banner/banner'
 
 const AboutPage = () => {
     return (
         <div className="mt-[120px] ">
-            <div className='relative flex justify-center items-center w-full h-[264px]'>
-                <img className='relative h-[264px] object-cover w-full' src='https://preview.colorlib.com/theme/fashe/images/heading-pages-06.jpg' alt='Blog Header' />
-                <h1 className='uppercase absolute text-5xl z-[1] text-white font-bold'>about</h1>
-            </div>
+            <Banner img={"https://preview.colorlib.com/theme/fashe/images/heading-pages-06.jpg"} title={"about"} />
             <div className='py-16 max-w-[1176px] justify-center mx-auto flex flex-row gap-8 flex-wrap '>
                 <div className='overflow-hidden w-[370px] '>
                     <img className='w-[370px] hover:scale-110 transition duration-500' src='https://preview.colorlib.com/theme/fashe/images/banner-14.jpg' />

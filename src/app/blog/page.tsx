@@ -6,6 +6,7 @@ import { BlogPost } from '../../types/types';
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import FeaturedProductsCard from '../../components/FeaturedProductsCard/featuredProductsCard';
 import Tag from '../../components/Tag/tag';
+import Banner from '../../components/Banner/banner';
 
 const BlogPage = () => {
     const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
@@ -16,10 +17,7 @@ const BlogPage = () => {
 
     return (
         <div className="mt-[120px]">
-            <div className='relative flex justify-center items-center w-full h-[264px]'>
-                <img className='relative h-[264px] object-cover w-full' src='https://preview.colorlib.com/theme/fashe/images/heading-pages-05.jpg' alt='Blog Header' />
-                <h1 className='uppercase absolute text-5xl z-[1] text-white font-bold'>blog</h1>
-            </div>
+            <Banner img={"https://preview.colorlib.com/theme/fashe/images/heading-pages-05.jpg"} title={"blog"} />
             <section>
                 <div className="py-10 mt-10 max-w-[1176px] mx-auto flex gap-20 flex-wrap ">
                     <div className='flex flex-col gap-8 w-fit'>

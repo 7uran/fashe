@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Product } from '../../types/types';
 import { IoCloseSharp } from "react-icons/io5";
 import { loadStripe } from '@stripe/stripe-js';
+import Banner from '../../components/Banner/banner';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '');
 
@@ -38,52 +39,11 @@ const FeaturePage = () => {
         localStorage.setItem('cart', JSON.stringify(updatedProducts));
     };
 
-    const handleCheckout = async () => {
-        const stripe = await stripePromise;
 
-        if (!stripe) {
-            console.error('Stripe has not been loaded.');
-            return;
-        }
-
-        const response = await fetch('/api/create-checkout-session', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                items: products.map(product => ({
-                    price_data: {
-                        currency: 'usd',
-                        product_data: {
-                            name: product.title,
-                        },
-                        unit_amount: product.price * 100,
-                    },
-                    quantity: product.quantity,
-                })),
-            }),
-        });
-
-        if (!response.ok) {
-            console.error('Failed to create checkout session.');
-            return;
-        }
-
-        const { id: sessionId } = await response.json();
-        const { error } = await stripe.redirectToCheckout({ sessionId });
-
-        if (error) {
-            console.error('Error redirecting to checkout:', error);
-        }
-    };
 
     return (
         <div className='mt-[120px]'>
-            <div className='relative flex justify-center items-center w-full h-[264px]'>
-                <img className='relative h-[264px] object-cover w-full' src='https://preview.colorlib.com/theme/fashe/images/heading-pages-01.jpg' alt='Blog Header' />
-                <h1 className='uppercase absolute text-5xl z-[1] text-white font-bold'>cart</h1>
-            </div>
+            <Banner img={"https://preview.colorlib.com/theme/fashe/images/heading-pages-01.jpg"} title={"cart"} />
             <div className='max-w-[1176px] mx-auto py-20 flex flex-col gap-10'>
                 <div>
                     {products.length === 0 ? (
@@ -139,9 +99,9 @@ const FeaturePage = () => {
                 <div className='flex justify-end'>
                     <button
                         className='w-fit uppercase h-fit rounded-full text-white bottom-4 bg-black px-10 py-3 group-hover shadow-sm hover:bg-main hover:text-white transition'
-                        // onClick={handleCheckout}
+
                     >
-                        checkout    
+                        checkout
                     </button>
                 </div>
             </div>
