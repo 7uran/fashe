@@ -4,6 +4,7 @@ import { Product } from '../../types/types';
 import { IoCloseSharp } from "react-icons/io5";
 import { loadStripe } from '@stripe/stripe-js';
 import Banner from '../../components/Banner/banner';
+import Link from 'next/link';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '');
 
@@ -97,12 +98,11 @@ const FeaturePage = () => {
                     )}
                 </div>
                 <div className='flex justify-end'>
-                    <button
+                    <Link href={"/payment"}
                         className='w-fit uppercase h-fit rounded-full text-white bottom-4 bg-black px-10 py-3 group-hover shadow-sm hover:bg-main hover:text-white transition'
-
                     >
                         checkout
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>

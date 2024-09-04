@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 import Spinner from "../components/Spinner/spinner";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-credit-cards-2/dist/lib/styles.scss';
 import ScrollButton from '../components/ScrollButton/scrollButton';
 
 const montserrat = Montserrat({ subsets: ["latin"] });
